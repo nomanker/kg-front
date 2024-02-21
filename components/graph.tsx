@@ -9,18 +9,20 @@ const KnowledgeGraph = () => {
     if (!containerRef.current) return;
     const graph = new G6.Graph({
       container: containerRef.current,
-      width: 800,
+      width: 1000,
       height: 600,
       layout: {
         type: 'force',
         preventOverlap: true,
+        linkDistance: 100,
+        nodeStrength: -200
       },
       modes: {
         default: ['drag-canvas', 'zoom-canvas', 'drag-node'],
       },
       defaultNode: {
-        size: [100, 20],
-        type: 'rect',
+        size: 40,
+        type: 'circle',
         style: {
           fill: '#DEE9FF',
           stroke: '#5B8FF9',
@@ -28,12 +30,12 @@ const KnowledgeGraph = () => {
         labelCfg: {
           style: {
             fill: '#000',
-            fontSize: 12,
+            fontSize: 10,
           },
         },
       },
       defaultEdge: {
-        type: 'polyline',
+        type: 'line',
         style: {
           stroke: '#e2e2e2',
           lineWidth: 2,

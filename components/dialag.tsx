@@ -34,7 +34,7 @@ const parseDateTime = (dateObj: any, timeObj: any): Date => {
   );
 };
 
-const DialogueComponent: React.FC = () => {
+const DialogueComponent = (id:{id:string}) => {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [question, setQuestion] = useState<string>(''); // 新状态来存储用户问题
 

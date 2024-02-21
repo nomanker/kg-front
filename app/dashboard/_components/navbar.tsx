@@ -10,6 +10,12 @@ interface User {
   firstName: string|null;
   // 添加其他需要的属性
 }
+const dialogs = [
+  { id: '1', title: '对话 1' },
+  { id: '2', title: '对话 2' },
+  { id: '3', title: '对话 3' },
+  // 添加更多对话...
+];
 
 const NavigationBar: React.FC = () => {
   // const router = useRouter();
@@ -46,7 +52,7 @@ const NavigationBar: React.FC = () => {
         </Button>
         <Button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           <Link href="/dashboard/dialog" className="text-white">
-            对话系统
+            对话列表
           </Link>
         </Button>
       </div>

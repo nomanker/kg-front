@@ -2,7 +2,7 @@ import DialogueComponent from "@/components/dialag";
 
 const Dialog = () => {
     return ( <div>
-        <DialogueComponent/>
+        <DialogueComponent id="0"/>
     </div> );
 }
  
