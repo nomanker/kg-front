@@ -34,13 +34,18 @@ const parseDateTime = (dateObj: any, timeObj: any): Date => {
   );
 };
 
-const DialogueComponent = (id:{id:string}) => {
+interface DialogueComponentProps {
+  id: number;
+}
+
+const DialogueComponent = ({id}:DialogueComponentProps) => {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [question, setQuestion] = useState<string>(''); // 新状态来存储用户问题
 
   useEffect(() => {
+    console.log(id);
     const fetchData = async () => {
-      const url = 'http://20.25.141.251:8000/dialogue/all';
+      const url = `http://20.25.141.251:8000/dialogue/?did=${id}`;
       const token =
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJub21hbmtlciIsImV4cCI6MTcxMTY1NjAxM30.1XJ1EntFH7-2HTwaPqPq4XqZzgAzUhn-Xy-cFBqXZ-U'; // 替换为实际的token
       try {
@@ -51,7 +56,7 @@ const DialogueComponent = (id:{id:string}) => {
           },
         });
         console.log(response.data);
-        setHistory(response.data[0].history); // 假设API响应的直接是Dialogue数组
+        setHistory(response.data.history); // 假设API响应的直接是Dialogue数组
       } catch (error) {
         console.error('请求失败:', error);
       }
@@ -64,7 +69,7 @@ const DialogueComponent = (id:{id:string}) => {
     event.preventDefault(); // 阻止表单默认提交行为
     const url = `http://20.25.141.251:8000/dialogue/?question=${encodeURIComponent(
       question,
-    )}&database=equipment_zh&did=0`;
+    )}&database=equipment_zh&did=${id}`;
     const token =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJub21hbmtlciIsImV4cCI6MTcxMTY1NjAxM30.1XJ1EntFH7-2HTwaPqPq4XqZzgAzUhn-Xy-cFBqXZ-U'; // 使用实际的token
 

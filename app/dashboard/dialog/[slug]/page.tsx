@@ -1,8 +1,8 @@
 import DialogueComponent from "@/components/dialag";
 
-const DialogPage = ({params}:{params:{slug:string}}) => {
+const DialogPage = ({params}:{params:{slug:number}}) => {
     return (<div>
-        <DialogueComponent id="12"/>
+        <DialogueComponent id={params.slug}/>
     </div>  );
 }
  

@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@antv/g6": "^4.8.24",
+    "@clerk/nextjs": "4.29.7",
     "@radix-ui/react-slot": "^1.0.2",
     "axios": "^1.6.7",
     "class-variance-authority": "^0.7.0",
