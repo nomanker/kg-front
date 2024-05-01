@@ -1,6 +1,6 @@
-'use client';
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+"use client";
+import React, { useState, useEffect } from "react";
+import { fetchDialogue, ask } from "@/lib/fetchdialog";
 
 // 定义数据类型
 interface HistoryItem {
@@ -30,7 +30,7 @@ const parseDateTime = (dateObj: any, timeObj: any): Date => {
     _Date__day,
     _Time__hour,
     _Time__minute,
-    _Time__second,
+    _Time__second
   );
 };
 
@@ -38,66 +38,25 @@ interface DialogueComponentProps {
   id: number;
 }
 
-const DialogueComponent = ({id}:DialogueComponentProps) => {
+const DialogueComponent = ({ id }: DialogueComponentProps) => {
   const [history, setHistory] = useState<HistoryItem[]>([]);
-  const [question, setQuestion] = useState<string>(''); // 新状态来存储用户问题
+  const [question, setQuestion] = useState<string>(""); // 新状态来存储用户问题
 
   useEffect(() => {
-    console.log(id);
-    const fetchData = async () => {
-      const url = `http://20.25.141.251:8000/dialogue/?did=${id}`;
-      const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJub21hbmtlciIsImV4cCI6MTcxMTY1NjAxM30.1XJ1EntFH7-2HTwaPqPq4XqZzgAzUhn-Xy-cFBqXZ-U'; // 替换为实际的token
-      try {
-        const response = await axios.get(url, {
-          headers: {
-            accept: 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        console.log(response.data);
-        setHistory(response.data.history); // 假设API响应的直接是Dialogue数组
-      } catch (error) {
-        console.error('请求失败:', error);
-      }
-    };
-
-    fetchData();
+    fetchDialogue(id).then(setHistory);
   }, []);
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault(); // 阻止表单默认提交行为
-    const url = `http://20.25.141.251:8000/dialogue/?question=${encodeURIComponent(
-      question,
-    )}&database=equipment_zh&did=${id}`;
-    const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJub21hbmtlciIsImV4cCI6MTcxMTY1NjAxM30.1XJ1EntFH7-2HTwaPqPq4XqZzgAzUhn-Xy-cFBqXZ-U'; // 使用实际的token
-
-    try {
-      const response = await axios.put(
-        url,
-        {},
-        {
-          headers: {
-            accept: 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-
-      // 假设响应包含更新后的对话列表
-      console.log(response.data);
-      setHistory((prev) => [...prev, response.data]);
-      setQuestion(''); // 清空输入框
-    } catch (error) {
-      console.error('发送问题失败:', error);
-    }
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    ask(question, "equipment_zh", id)
+      .then((data) => {setHistory((p) => [...p, data]);})
+      .finally(() => setQuestion(""));
   };
 
   return (
     <div className="flex flex-col h-screen">
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {' '}
+        {" "}
         {/* 设置滚动区域 */}
         {history.map((item, idx) => (
           <div key={idx} className="mt-2 p-2 bg-white rounded-md shadow-sm">
@@ -108,10 +67,10 @@ const DialogueComponent = ({id}:DialogueComponentProps) => {
               <span className="font-bold">A:</span> {item.answer}
             </p>
             <p className="text-right text-xs text-gray-500 mt-2">
-              Time:{' '}
+              Time:{" "}
               {parseDateTime(
                 item.create_time._DateTime__date,
-                item.create_time._DateTime__time,
+                item.create_time._DateTime__time
               ).toLocaleString()}
             </p>
           </div>
@@ -129,7 +88,7 @@ const DialogueComponent = ({id}:DialogueComponentProps) => {
         />
         <button
           type="submit"
-          className="text-white bg-blue-500 hover:bg-blue-600 font-medium py-2 px-4 rounded"
+          className="text-white bg-blue-500 hover:bg-blue-600 font-medium py-2 px-4 rounded mx-3"
         >
           发送
         </button>

@@ -4,11 +4,10 @@ import { redirect } from "next/navigation";
 export default async function DashboardPage() {
   const { userId } = auth();
 
-  if (!userId) {
-    redirect("/");
-  }
+  if (!userId) redirect("/");
 
   const user = await clerkClient.users.getUser(userId);
+  console.log(userId)
 
   return (
     <div>
