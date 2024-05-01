@@ -1,23 +1,41 @@
-import axios from 'axios';
+import axios from "@/lib/http";
 
-const fetchData = async () => {
-  const url = 'http://20.25.141.251:8000/dialogue/all';
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJub21hbmtlciIsImV4cCI6MTcwODA0OTU2Nn0.m4x14YDj6Y1IfGWcYKE_USNUGpPmvQN-1w-lpeKhhF4';
-  
-  try {
-    const response = await axios.get(url, {
-      headers: {
-        'accept': 'application/json',
-        'Authorization': `Bearer ${token}`
+export const fetchAllDialogue = () =>
+  axios
+    .get("/dialogue/all")
+    .then((res) => res.data)
+    .catch((err) => null);
+
+export const fetchDialogue = (id: number) =>
+  axios
+    .get(`/dialogue?did=${id}`)
+    .then((res) => res.data.history)
+    .catch((err) => null);
+
+export const ask = (question, database, id) =>
+  axios
+    .put(
+      "/dialogue",
+      {},
+      {
+        params: {
+          question,
+          database,
+          did: id,
+        },
       }
-    });
+    )
+    .then((res) => res.data)
+    .catch((err) => null);
 
-    console.log(response.data); // 处理响应数据
-    return response.data; // 返回响应数据
-  } catch (error) {
-    console.error('请求失败:', error);
-    return null; // 处理错误情况
-  }
-};
+export const fetchAllGraphs = () =>
+  axios
+    .get("/graph/all")
+    .then((res) => res.data)
+    .catch((err) => null);
 
-export default fetchData;
+export const fetchGraph = (id) =>
+  axios
+    .get(`/graph?gid=${id}`)
+    .then((res) => res.data)
+    .catch((err) => null);
